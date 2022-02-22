@@ -1,10 +1,21 @@
-import pm4py
-from pm4py.objects.log.importer.xes import importer as xes_importer
+
 
 a = 3
-log = xes_importer.apply('data/BPI_Challenge_2017.xes')
+def get_mysql_connector():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="pm4py"
+    )
 
 if a == 3:
+    import pm4py
+    import mysql.connector
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+
+    mydb = get_mysql_connector()
+    log = xes_importer.apply('data/BPI_Challenge_2017.xes')
     for trace in log:
         print(trace)
         for event in trace:
@@ -13,8 +24,18 @@ if a == 3:
             time = event["time:timestamp"]
             action = event["Action"]
             name = trace.__dict__["_attributes"]["concept:name"]
+            my_cursor = mydb.cursor()
+            sql = "INSERT IGNORE INTO pm4py.log VALUES (%s, %s, %s,%s, %s)"
+            val = (eventId, user, time, action, name)
+            my_cursor.execute(sql, val)
+            mydb.commit()
+
 
 if a == 2:
+    import pm4py
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+
+    log = xes_importer.apply('data/BPI_Challenge_2017.xes')
 
     log1 = log[0]
     log2 = log[1]
