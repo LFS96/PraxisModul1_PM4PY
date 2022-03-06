@@ -1,6 +1,6 @@
+a = 6
 
 
-a = 3
 def get_mysql_connector():
     return mysql.connector.connect(
         host="localhost",
@@ -8,6 +8,32 @@ def get_mysql_connector():
         password="",
         database="pm4py"
     )
+
+
+if a == 6: #Similar Activities
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+    from pm4py.algo.organizational_mining.sna import algorithm as sna
+    from pm4py.visualization.sna import visualizer as sna_visualizer
+    log = xes_importer.apply('data/BPI_Challenge_2017.xes')
+    ja_values = sna.apply(log, variant=sna.Variants.JOINTACTIVITIES_LOG)
+    gviz_ja_py = sna_visualizer.apply(ja_values, variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.view(gviz_ja_py, variant=sna_visualizer.Variants.PYVIS)
+
+if a == 5: #Roles Discovery
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+    from pm4py.algo.organizational_mining.roles import algorithm as roles_discovery
+    log = xes_importer.apply('data/BPI_Challenge_2017.xes')
+    roles = roles_discovery.apply(log)
+    print([x for x in roles])
+if a == 4:# Handover of Work
+    from pm4py.algo.organizational_mining.sna import algorithm as sna
+    from pm4py.visualization.sna import visualizer as sna_visualizer
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+
+    log = xes_importer.apply('data/BPI_Challenge_2017.xes')
+    hw_values = sna.apply(log, variant=sna.Variants.HANDOVER_LOG)
+    gviz_hw_py = sna_visualizer.apply(hw_values, variant=sna_visualizer.Variants.PYVIS)
+    sna_visualizer.view(gviz_hw_py, variant=sna_visualizer.Variants.PYVIS)
 
 if a == 3:
     import pm4py
@@ -29,7 +55,6 @@ if a == 3:
             val = (eventId, user, time, action, name)
             my_cursor.execute(sql, val)
             mydb.commit()
-
 
 if a == 2:
     import pm4py
@@ -87,4 +112,4 @@ if a == 1:
     gviz = dfg_visualization.apply(dfg, log=log, variant=dfg_visualization.Variants.PERFORMANCE, parameters=parameters)
     dfg_visualization.save(gviz, "dfg_offer.svg")
 
-    print("FERTIG")
+print("FERTIG")
