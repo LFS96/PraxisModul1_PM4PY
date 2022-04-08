@@ -1,4 +1,4 @@
-a = 6
+a = 7
 
 
 def get_mysql_connector():
@@ -9,6 +9,34 @@ def get_mysql_connector():
         database="pm4py"
     )
 
+if a == 7:
+    from pm4py.objects.log.importer.xes import importer as xes_importer
+    from pm4py.algo.organizational_mining.sna import algorithm as sna
+    from pm4py.visualization.sna import visualizer as sna_visualizer
+    from pm4py.algo.organizational_mining.local_diagnostics import algorithm as local_diagnostics
+
+    log = xes_importer.apply('data/BPI_Challenge_2017_Offer_log.xes')
+
+    ld = local_diagnostics.apply_from_group_attribute(log)
+    # GROUP RELATIVE FOCUS (on a given type of work) specifies how much a resource group performed this type of work
+    # compared to the overall workload of the group. It can be used to measure how the workload of a resource group
+    # is distributed over different types of work, i.e., work diversification of the group.
+    print("\ngroup_relative_focus")
+    print(ld["group_relative_focus"])
+    # GROUP RELATIVE STAKE (in a given type of work) specifies how much this type of work was performed by a certain
+    # resource group among all groups. It can be used to measure how the workload devoted to a certain type of work is
+    # distributed over resource groups in an organizational model, i.e., work participation by different groups.
+    print("\ngroup_relative_stake")
+    print(ld["group_relative_stake"])
+    # GROUP COVERAGE with respect to a given type of work specifies the proportion of members of a resource group that
+    # performed this type of work.
+    print("\ngroup_coverage")
+    print(ld["group_coverage"])
+    # GROUP MEMBER CONTRIBUTION of a member of a resource group with respect to the given type of work specifies how
+    # much of this type of work by the group was performed by the member. It can be used to measure how the workload
+    # of the entire group devoted to a certain type of work is distributed over the group members.
+    print("\ngroup_member_contribution")
+    print(ld["group_member_contribution"])
 
 if a == 6: #Similar Activities
     from pm4py.objects.log.importer.xes import importer as xes_importer
